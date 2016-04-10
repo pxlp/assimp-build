@@ -26,12 +26,7 @@ fn main() {
     let dst = cfg.build();
     println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
 
-    // Link to correct versions of assimp and zlib
-    // NOTE: MSVC has to link to release libs to avoid CRT mismatch
     println!("cargo:rustc-link-lib=static=assimp");
-    if !pkg_config::find_library("zlib").is_ok() {
-        println!("cargo:rustc-link-lib=static=zlibstatic");
-    }
 
     // Link to libstdc++ on GNU
     if target.contains("gnu") {
