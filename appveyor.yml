@@ -1,5 +1,7 @@
 environment:
   matrix:
+  - TARGET: i686-pc-windows-gnu
+    MINGW: true
   - TARGET: x86_64-pc-windows-gnu
     MSYS_BITS: 64
   - TARGET: i686-pc-windows-gnu
@@ -11,6 +13,10 @@ install:
   - rust-nightly-%TARGET%.exe /VERYSILENT /NORESTART /DIR="C:\Program Files (x86)\Rust"
   - set PATH=%PATH%;C:\Program Files (x86)\Rust\bin
   - if defined MSYS_BITS set PATH=%PATH%;C:\msys64\mingw%MSYS_BITS%\bin;C:\msys64\usr\bin
+  - if defined MINGW set PATH=%PATH%;C:\MinGW\bin
+  - # Workaround for CMake not wanting sh.exe on PATH for MinGW. See http://help.appveyor.com/discussions/problems/3193-cmake-building-for-mingw-issue-with-git-shexe
+  - if defined MINGW set PATH=%PATH:C:\Program Files (x86)\Git\bin;=%
+  - if defined MINGW set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
   - rustc -V
   - cargo -V
 
@@ -20,14 +26,10 @@ build_script:
   - git clone https://github.com/assimp/assimp.git assimp
   - cd assimp
   - git checkout v3.2
-  - mkdir build
-  - cd build
-  - set GENERATOR="Visual Studio 12 2013"
+  - cd ..
   - if defined MSYS_BITS set GENERATOR="MSYS Makefiles"
-  - cmake -G %GENERATOR% -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_TESTS=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release ..
-  - cmake --build .
-  - cd ../..
-  - cp assimp/build/code/libassimp.a .
+  - if defined MINGW set GENERATOR="MinGW Makefiles"
+  - cargo build --verbose
 
 test_script:
   - cargo test

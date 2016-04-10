@@ -6,3 +6,7 @@ build = "build.rs"
 
 [dependencies]
 assimp = "0.1.0"
+
+[build-dependencies]
+cmake = "0.1"
+pkg-config = "0.3"
