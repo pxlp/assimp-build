@@ -24,10 +24,10 @@ build_script:
   - cd build
   - set GENERATOR="Visual Studio 12 2013"
   - if defined MSYS_BITS set GENERATOR="MSYS Makefiles"
-  - cmake -G %GENERATOR% -D ASSIMP_BUILD_ASSIMP_TOOLS=OFF -D ASSIMP_BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_STATIC_LIB=ON CMAKE_BUILD_TYPE=Release ..
-  - cmake --build .
+  - cmake -G %GENERATOR% -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_TESTS=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release ..
+  - cmake --build . --profile=Release
   - cd ../..
-  - cp assimp_build/build/code/libassimp.a .
+  - cp assimp/build/code/libassimp.a .
 
 test_script:
   - cargo test
