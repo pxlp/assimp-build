@@ -16,5 +16,18 @@ install:
 
 build: false
 
+build_script:
+  - git clone https://github.com/assimp/assimp.git assimp
+  - cd assimp
+  - git checkout v3.2
+  - mkdir build
+  - cd build
+  - set GENERATOR="Visual Studio 12 2013"
+  - if defined MSYS_BITS set GENERATOR="MSYS Makefiles"
+  - cmake -G %GENERATOR% -D ASSIMP_BUILD_ASSIMP_TOOLS=OFF -D ASSIMP_BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D BUILD_STATIC_LIB=ON CMAKE_BUILD_TYPE=Release ..
+  - cmake --build .
+  - cd ../..
+  - cp assimp_build/build/code/libassimp.a .
+
 test_script:
   - cargo test
