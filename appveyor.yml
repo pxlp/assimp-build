@@ -27,8 +27,7 @@ build_script:
   - cd assimp
   - git checkout v3.2
   - cd ..
-  - if defined MSYS_BITS set GENERATOR="MSYS Makefiles"
-  - if defined MINGW set GENERATOR="MinGW Makefiles"
+  - if defined MINGW set GENERATOR=MinGW Makefiles
   - cargo build --verbose
 
 test_script:
