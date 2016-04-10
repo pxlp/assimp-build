@@ -1,0 +1,8 @@
+[package]
+name = "assimp-build"
+version = "0.1.0"
+authors = ["Fredrik Noren <fredrik.jw.noren@gmail.com>"]
+build = "build.rs"
+
+[dependencies]
+assimp = "0.1.0"
